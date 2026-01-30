@@ -35,6 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double tabWidth = screenWidth / 4;
     return Scaffold(
       backgroundColor: Colors.white,
       body: PageView(
@@ -46,31 +48,53 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         children: _screens,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped, // Handle clicks
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.purple,
-        unselectedItemColor: Colors.black,
-        selectedFontSize: 14,
-        unselectedFontSize: 14,
-        elevation: 100,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view_outlined),
-            label: "Category",
+      bottomNavigationBar: Stack(
+        children: [
+          BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            selectedItemColor: Colors.purple,
+            unselectedItemColor: Colors.black,
+            selectedFontSize: 14,
+            unselectedFontSize: 14,
+            elevation: 100,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.grid_view_outlined),
+                label: "Category",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.receipt_long_outlined),
+                label: "My Order",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline),
+                label: "Account",
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long_outlined),
-            label: "My Order",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: "Account",
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            top: 0,
+            left: tabWidth * _selectedIndex,
+            child: Container(
+              alignment: Alignment.center,
+              width: tabWidth,
+              child: Container(
+                height: 3,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: Colors.purple,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
           ),
         ],
       ),

@@ -16,7 +16,11 @@ class _AccountScreenState extends State<AccountScreen> {
       appBar: AppBar(
         title: Text(
           "Account",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
         ),
         backgroundColor: headerColor,
         elevation: 0,

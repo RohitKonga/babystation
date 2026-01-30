@@ -1,41 +1,36 @@
 import 'package:babystation/features/ui/home%20page%20module/widgets/category_widget.dart';
 import 'package:flutter/material.dart';
 
-class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({Key? key}) : super(key: key);
-
-  @override
-  _CategoryScreenState createState() => _CategoryScreenState();
-}
-
-class _CategoryScreenState extends State<CategoryScreen> {
-  final headerColor = const Color(0xFF9C278F);
+class CategoryDetailScreen extends StatelessWidget {
+  const CategoryDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final headerColor = const Color(0xFF9C278F);
+
+    final String categoryName =
+        ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Top Category",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-        ),
+        title: Text(categoryName),
         backgroundColor: headerColor,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 14.0),
-            child: Icon(Icons.shopping_bag_outlined),
-          ),
-        ],
+        foregroundColor: Colors.white,
         elevation: 0,
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.tune),
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+            ),
+          ),
+          IconButton(onPressed: () {}, icon: Icon(Icons.shopping_bag_outlined)),
+        ],
       ),
+      endDrawer: const FilterDrawer(),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 10),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
             child: Container(
               height: 52,
               decoration: BoxDecoration(
@@ -53,36 +48,34 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
             ),
           ),
-
           Padding(
-            padding: const EdgeInsets.only(
-              right: 14.0,
-              left: 14.0,
-              bottom: 14.0,
-              top: 14.0,
-            ),
+            padding: const EdgeInsets.only(right: 14.0, left: 14.0),
             child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+                crossAxisCount: 2,
                 mainAxisSpacing: 14,
                 crossAxisSpacing: 14,
                 childAspectRatio: 0.75,
               ),
-              itemCount: categories.length,
+              itemCount: products.length,
               itemBuilder: (context, index) {
-                final item = categories[index];
+                final item = products[index];
 
-                return CategoryCard(
-                  title: item["title"]!,
-                  imagePath: item["image"]!,
+                return ProductCard(
+                  title: item["title"] as String,
+                  image: item["image"] as String,
+                  price: item["price"] as String,
+                  oldPrice: item["oldPrice"] as String,
+                  discount: item["discount"] as String,
+                  isHot: item["isHot"] as bool,
+                  isFavorite: item["isFavorite"] as bool,
                   onTap: () {
                     Navigator.pushNamed(
                       context,
-                      '/category-detail',
-                      arguments:
-                          item["title"], // This sends "Kids Toys" or "Shoes"
+                      '/product-detail',
+                      arguments: item,
                     );
                   },
                 );

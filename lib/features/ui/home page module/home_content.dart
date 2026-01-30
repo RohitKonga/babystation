@@ -1,3 +1,4 @@
+import 'package:babystation/features/ui/home%20page%20module/add_child_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:babystation/features/ui/home page module/widgets/category_widget.dart';
 
@@ -8,14 +9,30 @@ class HomeContent extends StatefulWidget {
   _HomeContentState createState() => _HomeContentState();
 }
 
-class _HomeContentState extends State<HomeContent> {
+class _HomeContentState extends State<HomeContent>
+    with AutomaticKeepAliveClientMixin {
   PageController _pageController = PageController();
   int _currentPage = 0;
   bool expanded = false;
   final headerColor = const Color(0xFF9C278F);
 
+  @override
+  bool get wantKeepAlive => true; // This preserves the state during slides
+
   void toggle() {
     setState(() => expanded = !expanded);
+  }
+
+  // Inside _HomeContentState
+  List<ChildProfile> children = [
+    ChildProfile(name: "All", gender: "All", dob: ""), // Default item
+  ];
+  int selectedChildIndex = 0;
+
+  void _addNewChild(ChildProfile newChild) {
+    setState(() {
+      children.add(newChild);
+    });
   }
 
   @override
@@ -24,10 +41,9 @@ class _HomeContentState extends State<HomeContent> {
     super.dispose();
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Colors.white,
 
@@ -50,10 +66,16 @@ class _HomeContentState extends State<HomeContent> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       children: [
+                        /// TOP ROW HEADER
                         CircleAvatar(
                           radius: 22,
                           backgroundColor: Colors.white,
-                          backgroundImage: AssetImage("assets/images/boy.png"),
+                          // DYNAMIC IMAGE LOGIC:
+                          backgroundImage: AssetImage(
+                            children[selectedChildIndex].gender == "Girl"
+                                ? "assets/images/girl.png"
+                                : "assets/images/boy.png",
+                          ),
                         ),
                         const SizedBox(width: 12),
                         Column(
@@ -134,11 +156,37 @@ class _HomeContentState extends State<HomeContent> {
                           padding: const EdgeInsets.only(left: 16),
                           scrollDirection: Axis.horizontal,
                           children: [
-                            addChildCard(),
-                            profileCard("Rocky", selected: false),
-                            profileCard("All", selected: true),
-                            profileCard("Boy", selected: false),
-                            profileCard("Girl", selected: false),
+                            // 1. ADD CHILD BUTTON
+                            GestureDetector(
+                              onTap: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AddChildScreen(),
+                                  ),
+                                );
+                                if (result != null && result is ChildProfile) {
+                                  _addNewChild(result);
+                                }
+                              },
+                              child: addChildCard(),
+                            ),
+
+                            // 2. DYNAMIC LIST OF CHILDREN
+                            ...children.asMap().entries.map((entry) {
+                              int idx = entry.key;
+                              var child = entry.value;
+                              return GestureDetector(
+                                onTap: () =>
+                                    setState(() => selectedChildIndex = idx),
+                                child: profileCard(
+                                  child.name,
+                                  child.gender,
+                                  selected: selectedChildIndex == idx,
+                                ),
+                              );
+                            }).toList(),
                           ],
                         ),
                       ),
@@ -206,7 +254,7 @@ class _HomeContentState extends State<HomeContent> {
                       (index) => AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
                         margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: _currentPage == index ? 12 : 8,
+                        width: _currentPage == index ? 22 : 8,
                         height: 8,
                         decoration: BoxDecoration(
                           color: _currentPage == index
@@ -279,7 +327,11 @@ class _HomeContentState extends State<HomeContent> {
                       title: item["title"]!,
                       imagePath: item["image"]!,
                       onTap: () {
-                        Navigator.pushNamed(context, item["route"]!);
+                        Navigator.pushNamed(
+                          context,
+                          '/category-detail',
+                          arguments: item["title"],
+                        );
                       },
                     );
                   },
@@ -322,6 +374,7 @@ class _HomeContentState extends State<HomeContent> {
                   ],
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.only(right: 14.0, left: 14.0),
                 child: GridView.builder(
@@ -345,7 +398,13 @@ class _HomeContentState extends State<HomeContent> {
                       discount: item["discount"] as String,
                       isHot: item["isHot"] as bool,
                       isFavorite: item["isFavorite"] as bool,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/product-detail',
+                          arguments: item,
+                        );
+                      },
                     );
                   },
                 ),

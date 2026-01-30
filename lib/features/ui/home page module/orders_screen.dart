@@ -16,7 +16,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       appBar: AppBar(
         title: Text(
           "My Order",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 24),
         ),
         backgroundColor: headerColor,
         actions: [
