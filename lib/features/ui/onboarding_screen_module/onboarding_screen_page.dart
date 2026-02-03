@@ -136,7 +136,7 @@ class _OnboardingScreenPageState extends State<OnboardingScreenPage> {
                 child: const Text(
                   'Skip',
                   style: TextStyle(
-                    color: Colors.purple,
+                    color: Color(0xFF9C278F),
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -171,7 +171,7 @@ class _OnboardingScreenPageState extends State<OnboardingScreenPage> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple,
+                        backgroundColor: Color(0xFF9C278F),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -192,7 +192,7 @@ class _OnboardingScreenPageState extends State<OnboardingScreenPage> {
                       _currentPage > 0
                           ? Container(
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.purple),
+                                border: Border.all(color: Color(0xFF9C278F)),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               height: 45,
@@ -201,7 +201,7 @@ class _OnboardingScreenPageState extends State<OnboardingScreenPage> {
                                 onPressed: _previousPage,
                                 icon: const Icon(
                                   Icons.arrow_back,
-                                  color: Colors.purple,
+                                  color: Color(0xFF9C278F),
                                   size: 18,
                                 ),
                               ),
@@ -209,7 +209,7 @@ class _OnboardingScreenPageState extends State<OnboardingScreenPage> {
                           : const SizedBox(width: 48),
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.purple,
+                          color: Color(0xFF9C278F),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         height: 45,
@@ -238,7 +238,7 @@ class _OnboardingScreenPageState extends State<OnboardingScreenPage> {
       height: 8,
       width: _currentPage == index ? 20 : 8,
       decoration: BoxDecoration(
-        color: _currentPage == index ? Colors.purple : Colors.grey.shade300,
+        color: _currentPage == index ? Color(0xFF9C278F) : Colors.grey.shade300,
         borderRadius: BorderRadius.circular(4),
       ),
     );

@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onTap: _onItemTapped,
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.white,
-            selectedItemColor: Colors.purple,
+            selectedItemColor: Color(0xFF9C278F),
             unselectedItemColor: Colors.black,
             selectedFontSize: 14,
             unselectedFontSize: 14,
@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 3,
                 width: 50,
                 decoration: BoxDecoration(
-                  color: Colors.purple,
+                  color: Color(0xFF9C278F),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),

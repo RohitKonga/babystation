@@ -68,7 +68,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: Colors.purple),
+                      border: Border.all(color: Color(0xFF9C278F)),
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -76,13 +76,13 @@ class _OtpVerificationState extends State<OtpVerification> {
                     width: 56,
                     height: 56,
                     textStyle: TextStyle(
-                      color: Colors.purple,
+                      color: Color(0xFF9C278F),
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: Colors.purple),
+                      border: Border.all(color: Color(0xFF9C278F)),
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -104,7 +104,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.purple,
+                                color: Color(0xFF9C278F),
                               ),
                             ),
                           ),
@@ -125,7 +125,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
+                      backgroundColor: Color(0xFF9C278F),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -158,7 +158,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.purple,
+                                color: Color(0xFF9C278F),
                               ),
                             ),
                           ),
@@ -175,7 +175,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.purple,
+                                color: Color(0xFF9C278F),
                               ),
                             ),
                           ),

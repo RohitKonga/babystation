@@ -1,3 +1,4 @@
+import 'package:babystation/features/ui/home%20page%20module/cart_page.dart';
 import 'package:babystation/features/ui/home%20page%20module/widgets/category_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,15 @@ class CategoryDetailScreen extends StatelessWidget {
               onPressed: () => Scaffold.of(context).openEndDrawer(),
             ),
           ),
-          IconButton(onPressed: () {}, icon: Icon(Icons.shopping_bag_outlined)),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartPage()),
+              );
+            },
+            icon: Icon(Icons.shopping_bag_outlined),
+          ),
         ],
       ),
       endDrawer: const FilterDrawer(),

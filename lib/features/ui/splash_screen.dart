@@ -33,7 +33,7 @@ class SplashScreenState extends State<SplashScreen> {
           child: Image.asset('assets/images/bg.png'),
         ),
         Center(
-          child: Image.asset('assets/images/logo.png', height: 200, width: 300),
+          child: Image.asset('assets/images/logo.png', height: 160, width: 220),
         ),
       ],
     );

@@ -1,4 +1,5 @@
 import 'package:babystation/features/ui/home%20page%20module/add_child_screen.dart';
+import 'package:babystation/features/ui/home%20page%20module/cart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:babystation/features/ui/home page module/widgets/category_widget.dart';
 
@@ -117,10 +118,18 @@ class _HomeContentState extends State<HomeContent>
                         if (!expanded)
                           IconButton(
                             onPressed: () {},
-                            icon: const Icon(
-                              Icons.shopping_bag_outlined,
-                              color: Colors.white,
-                              size: 26,
+                            icon: IconButton(
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CartPage(),
+                                ),
+                              ),
+                              icon: Icon(
+                                Icons.shopping_bag_outlined,
+                                color: Colors.white,
+                                size: 26,
+                              ),
                             ),
                           ),
                         if (expanded)
@@ -258,7 +267,7 @@ class _HomeContentState extends State<HomeContent>
                         height: 8,
                         decoration: BoxDecoration(
                           color: _currentPage == index
-                              ? Colors.purple
+                              ? Color(0xFF9C278F)
                               : Colors.purple.shade100,
                           borderRadius: BorderRadius.circular(4),
                         ),
@@ -296,7 +305,7 @@ class _HomeContentState extends State<HomeContent>
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.purple,
+                          color: Color(0xFF9C278F),
                         ),
                       ),
                     ),
@@ -367,7 +376,7 @@ class _HomeContentState extends State<HomeContent>
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.purple,
+                          color: Color(0xFF9C278F),
                         ),
                       ),
                     ),
@@ -577,7 +586,7 @@ class _HomeContentState extends State<HomeContent>
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.purple,
+                          color: Color(0xFF9C278F),
                         ),
                       ),
                     ),

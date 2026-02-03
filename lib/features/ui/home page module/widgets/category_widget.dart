@@ -23,7 +23,7 @@ class CategoryCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: selected ? Colors.purple : Colors.transparent,
+            color: selected ? Color(0xFF9C278F) : Colors.transparent,
             width: 2,
           ),
           boxShadow: const [BoxShadow(blurRadius: 8, color: Colors.black12)],
@@ -48,7 +48,7 @@ class CategoryCard extends StatelessWidget {
                 title,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  color: selected ? Colors.purple : Colors.grey,
+                  color: selected ? Color(0xFF9C278F) : Colors.grey,
                 ),
               ),
             ),
@@ -263,7 +263,6 @@ class ProductCard extends StatelessWidget {
     );
   }
 
-  // Helper to keep code clean
   Widget _buildBadge(String text, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -342,7 +341,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                     onPressed: () => setState(() => selectedFilters.clear()),
                     child: const Text(
                       "Reset",
-                      style: TextStyle(color: Colors.purple, fontSize: 20),
+                      style: TextStyle(color: Color(0xFF9C278F), fontSize: 20),
                     ),
                   ),
                 ],
@@ -409,7 +408,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
+                  backgroundColor: Color(0xFF9C278F),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -434,13 +433,13 @@ class _FilterDrawerState extends State<FilterDrawer> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildSectionHeader(title),
+        buildSectionHeader(title, Colors.grey.shade300),
         ...options.map((option) {
           return RadioListTile<String>(
             title: Text(option, style: const TextStyle(fontSize: 16)),
             value: option,
             groupValue: selectedFilters[title],
-            activeColor: Colors.purple,
+            activeColor: Color(0xFF9C278F),
             onChanged: (value) {
               setState(() => selectedFilters[title] = value!);
             },
@@ -454,26 +453,26 @@ class _FilterDrawerState extends State<FilterDrawer> {
       ],
     );
   }
+}
 
-  Widget buildSectionHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-      child: Row(
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            ),
+Widget buildSectionHeader(String title, Color color) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+    child: Row(
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: color,
           ),
-          const SizedBox(width: 10),
-          Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
-        ],
-      ),
-    );
-  }
+        ),
+        const SizedBox(width: 10),
+        Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+      ],
+    ),
+  );
 }
 
 class ProductImageSlider extends StatefulWidget {
@@ -620,6 +619,21 @@ Widget buildAboutProductTab() {
   );
 }
 
+Widget buildColorOption(String img, bool selected) {
+  return Container(
+    margin: const EdgeInsets.only(right: 10),
+    padding: const EdgeInsets.all(2),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: selected ? Color(0xFF9C278F) : Colors.grey.shade300,
+        width: 2,
+      ),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: Image.asset(img, width: 50, height: 50),
+  );
+}
+
 Widget buildDetailsTab() {
   return Column(
     children: [
@@ -721,30 +735,353 @@ Widget buildRatingRow(String label, double value, String percentage) {
     padding: const EdgeInsets.symmetric(vertical: 4.0),
     child: Row(
       children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(width: 4),
-        const Icon(Icons.star, size: 14),
+        const Icon(Icons.star, size: 22),
         const SizedBox(width: 8),
         Expanded(
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
               value: value,
-              minHeight: 8,
+              minHeight: 12,
               backgroundColor: Colors.grey.shade200,
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.yellow),
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.amber),
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 8),
         SizedBox(
           width: 35,
           child: Text(
             percentage,
-            style: const TextStyle(color: Colors.black87, fontSize: 14),
+            style: const TextStyle(color: Colors.black87, fontSize: 18),
           ),
         ),
       ],
+    ),
+  );
+}
+
+Widget buildReviewRow(
+  String name,
+  int rating,
+  String date,
+  String description,
+) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+      SizedBox(height: 8),
+      Row(
+        children: [
+          ...List.generate(
+            5,
+            (index) => Icon(
+              Icons.star,
+              size: 24,
+              color: index < rating ? Colors.amber : Colors.grey[300],
+            ),
+          ),
+          SizedBox(width: 10),
+          const Text("|", style: TextStyle(color: Colors.grey, fontSize: 24)),
+          SizedBox(width: 10),
+          Text(date, style: TextStyle(color: Colors.grey, fontSize: 18)),
+        ],
+      ),
+      SizedBox(height: 8),
+      Text(description, style: TextStyle(color: Colors.grey, fontSize: 16)),
+      SizedBox(height: 20),
+    ],
+  );
+}
+
+Widget buildReviewCard(
+  String name,
+  String imageUrl,
+  double rating,
+  String date,
+  String comment,
+) {
+  return Container(
+    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    padding: EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            CircleAvatar(radius: 28, backgroundImage: AssetImage(imageUrl)),
+            SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      // Star Rating Logic
+                      ...List.generate(
+                        5,
+                        (index) => Icon(
+                          Icons.star,
+                          size: 20,
+                          color: index < rating
+                              ? Colors.amber
+                              : Colors.grey[300],
+                        ),
+                      ),
+                      Text(
+                        " | ${date}",
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12),
+        Text(comment, style: TextStyle(color: Colors.black87, height: 1.4)),
+        SizedBox(height: 8),
+        Text("6 days ago", style: TextStyle(color: Colors.grey, fontSize: 14)),
+      ],
+    ),
+  );
+}
+
+void showDeleteDialog(BuildContext context, int index) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.transparent,
+    builder: (context) {
+      return Container(
+        padding: const EdgeInsets.all(24),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 50,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            const SizedBox(height: 30),
+
+            const Text(
+              "Are you sure you want to\nremove the product from the cart?",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 30),
+
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      side: const BorderSide(color: Color(0xFF9C278F)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      "CANCEL",
+                      style: TextStyle(
+                        color: Color(0xFF9C278F),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 15),
+                // REMOVE BUTTON
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF9C278F),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "REMOVE",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10), // Safe area bottom padding
+          ],
+        ),
+      );
+    },
+  );
+}
+
+final List<Map<String, dynamic>> cartItems = [
+  {
+    "name": "Baby Gift Set 13 Pcs Set (Pink)",
+    "size": "S",
+    "price": 16.00,
+    "qty": 1,
+  },
+  {
+    "name": "Baby Gift Set 13 Pcs Set (Pink)",
+    "size": "S",
+    "price": 16.00,
+    "qty": 1,
+  },
+  {
+    "name": "Baby Gift Set 13 Pcs Set (Pink)",
+    "size": "S",
+    "price": 16.00,
+    "qty": 1,
+  },
+];
+
+Widget buildCartItem(
+  BuildContext context,
+  Map<String, dynamic> item,
+  int index,
+) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10),
+    child: Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            clipBehavior: Clip.antiAlias,
+            height: 120,
+            width: 90,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Image.asset("assets/products/gift.png", fit: BoxFit.cover),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              spacing: 3,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        item['name'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.red,
+                      ),
+                      width: 30,
+                      height: 30,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () => showDeleteDialog(context, index),
+                        icon: Icon(
+                          Icons.delete_outlined,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  "Size: ${item['size']}",
+                  style: const TextStyle(color: Colors.grey, fontSize: 14),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "₹${item['price']}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                // Quantity Selector
+                Container(
+                  width: 100,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const Icon(Icons.remove, size: 16),
+                      Text(
+                        "${item['qty']}",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Icon(Icons.add, size: 16, color: Colors.black),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

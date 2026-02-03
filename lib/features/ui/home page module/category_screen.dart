@@ -1,3 +1,4 @@
+import 'package:babystation/features/ui/home%20page%20module/cart_page.dart';
 import 'package:babystation/features/ui/home%20page%20module/widgets/category_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 14.0),
-            child: Icon(Icons.shopping_bag_outlined),
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CartPage()),
+                );
+              },
+              icon: Icon(Icons.shopping_bag_outlined),
+            ),
           ),
         ],
         elevation: 0,

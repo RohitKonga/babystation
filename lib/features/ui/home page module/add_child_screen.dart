@@ -154,7 +154,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
+                    backgroundColor: Color(0xFF9C278F),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -195,7 +195,9 @@ class _AddChildScreenState extends State<AddChildScreen> {
         children: [
           CircleAvatar(
             radius: 40,
-            backgroundColor: isSelected ? Colors.purple : Colors.grey.shade200,
+            backgroundColor: isSelected
+                ? Color(0xFF9C278F)
+                : Colors.grey.shade200,
             child: CircleAvatar(radius: 37, backgroundImage: AssetImage(asset)),
           ),
           const SizedBox(height: 8),
@@ -221,7 +223,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Colors.purple, // Header background color
+              primary: Color(0xFF9C278F), // Header background color
               onPrimary: Colors.white, // Header text color
               onSurface: Colors.black, // Body text color
             ),

@@ -1,4 +1,7 @@
+import 'package:babystation/features/ui/home%20page%20module/cart_page.dart';
+import 'package:babystation/features/ui/home%20page%20module/review_page.dart';
 import 'package:babystation/features/ui/home%20page%20module/widgets/category_widget.dart';
+import 'package:babystation/features/ui/home%20page%20module/write_review.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -32,6 +35,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartPage()),
+              );
+            },
+            icon: Icon(Icons.shopping_bag_outlined),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -116,7 +130,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.purple,
+                            color: Color(0xFF9C278F),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -176,9 +190,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        _buildColorOption(product['image'], true),
-                        _buildColorOption(product['image'], false),
-                        _buildColorOption(product['image'], false),
+                        buildColorOption(product['image'], true),
+                        buildColorOption(product['image'], false),
+                        buildColorOption(product['image'], false),
                       ],
                     ),
 
@@ -208,7 +222,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               _selectedChoice = selected ? choice : null;
                             });
                           },
-                          selectedColor: const Color(0xFF9C27B0),
+                          selectedColor: const Color(0xFF9C278F),
                           backgroundColor: Colors.white,
                           labelStyle: TextStyle(
                             fontSize: 14,
@@ -310,6 +324,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
             SizedBox(height: 15),
 
+            // CUSTOMER REVIEW
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 14.0,
@@ -339,77 +354,169 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // LARGE RATING NUMBER
-                        const Text(
-                          "4.6",
-                          style: TextStyle(
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        // STAR RATING AND COUNT
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 8),
-                            Row(
-                              children: List.generate(
-                                5,
-                                (index) => const Icon(
-                                  Icons.star,
-                                  color: Colors.orange,
-                                  size: 20,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 16),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "4.6",
+                                style: TextStyle(
+                                  fontSize: 48,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            const Text(
-                              "(1968 Rating)",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
+                              const SizedBox(width: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: List.generate(
+                                      5,
+                                      (index) => const Icon(
+                                        Icons.star,
+                                        color: Colors.orange,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  const Text(
+                                    "(1968 Rating)",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
 
-                    // RATING PROGRESS BARS
-                    buildRatingRow("5", 0.5, "50%"),
-                    buildRatingRow("4", 0.2, "20%"),
-                    buildRatingRow("3", 0.1, "10%"),
-                    buildRatingRow("2", 0.1, "10%"),
-                    buildRatingRow("1", 0.1, "10%"),
+                          buildRatingRow("5", 0.5, "50%"),
+                          buildRatingRow("4", 0.2, "20%"),
+                          buildRatingRow("3", 0.1, "10%"),
+                          buildRatingRow("2", 0.1, "10%"),
+                          buildRatingRow("1", 0.1, "10%"),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
+
+            SizedBox(height: 15),
+
+            //TOP REVIEWS
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14.0,
+                vertical: 10,
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Top reviews from Delhi",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    ...List.generate(
+                      3,
+                      (index) => buildReviewRow(
+                        "Anglo Saxon",
+                        3,
+                        "25 Sep, 2023",
+                        '''From the rich, smoky depth of aged whiskey to the smooth and refreshing notes of premium vodka, each bottle is carefully selected to deliver a unique experience.''',
+                      ),
+                    ),
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReviewPage(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "View more comments",
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 5, 16, 16),
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF9C278F),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => WriteReview()),
+                    );
+                  },
+                  child: const Text(
+                    "WRITE A REVIEW",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 15),
+
             /////////////////////////////////////////
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildColorOption(String img, bool selected) {
-    return Container(
-      margin: const EdgeInsets.only(right: 10),
-      padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: selected ? Colors.purple : Colors.grey.shade300,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Image.asset(img, width: 50, height: 50),
     );
   }
 }
