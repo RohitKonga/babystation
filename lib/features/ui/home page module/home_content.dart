@@ -1,7 +1,8 @@
 import 'package:babystation/features/ui/home%20page%20module/add_child_screen.dart';
 import 'package:babystation/features/ui/home%20page%20module/cart_page.dart';
+import 'package:babystation/features/ui/category%20module/category_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:babystation/features/ui/home page module/widgets/category_widget.dart';
+import 'package:babystation/features/ui/helper.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({Key? key}) : super(key: key);
@@ -280,9 +281,8 @@ class _HomeContentState extends State<HomeContent>
               const SizedBox(height: 10),
 
               Padding(
-                padding: const EdgeInsets.only(right: 14.0, left: 14.0),
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
                       "Shop by Category",
@@ -299,7 +299,14 @@ class _HomeContentState extends State<HomeContent>
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CategoryScreen(),
+                          ),
+                        );
+                      },
                       child: Text(
                         "View All",
                         style: TextStyle(
@@ -486,7 +493,7 @@ class _HomeContentState extends State<HomeContent>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Shop by Category",
+                      "Shop by Age",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -597,9 +604,7 @@ class _HomeContentState extends State<HomeContent>
                 padding: const EdgeInsets.symmetric(horizontal: 14.0),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    // Determine how many columns based on screen width
                     int crossAxisCount = constraints.maxWidth > 600 ? 3 : 2;
-
                     return GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),

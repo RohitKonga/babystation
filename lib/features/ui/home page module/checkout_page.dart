@@ -1,6 +1,6 @@
 import 'package:babystation/features/ui/home%20page%20module/manage_address.dart';
 import 'package:babystation/features/ui/home%20page%20module/payment_method.dart';
-import 'package:babystation/features/ui/home%20page%20module/widgets/category_widget.dart';
+import 'package:babystation/features/ui/helper.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -90,7 +90,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
             Padding(
               padding: const EdgeInsets.only(top: 16.0, bottom: 10.0),
-              child: buildSectionHeader("3 items", Colors.black),
+              child: buildSectionHeader(
+                EdgeInsetsGeometry.only(left: 16.0, right: 16.0),
+                "3 items",
+                Colors.black,
+              ),
             ),
 
             Column(
@@ -100,7 +104,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
-              child: buildSectionHeader("Promo Code", Colors.black),
+              child: buildSectionHeader(
+                EdgeInsetsGeometry.only(right: 16.0, left: 16.0),
+                "Promo Code",
+                Colors.black,
+              ),
             ),
 
             Padding(

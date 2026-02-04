@@ -2,45 +2,50 @@ import 'package:babystation/features/ui/home%20page%20module/cart_page.dart';
 import 'package:babystation/features/ui/helper.dart';
 import 'package:flutter/material.dart';
 
-class CategoryDetailScreen extends StatelessWidget {
-  const CategoryDetailScreen({super.key});
+class CategoryScreen extends StatefulWidget {
+  const CategoryScreen({Key? key}) : super(key: key);
+
+  @override
+  _CategoryScreenState createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
+  final headerColor = const Color(0xFF9C278F);
 
   @override
   Widget build(BuildContext context) {
-    final headerColor = const Color(0xFF9C278F);
-
-    final String categoryName =
-        ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
-        title: Text(categoryName),
+        title: Text(
+          "Top Category",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        ),
         backgroundColor: headerColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
         actions: [
-          Builder(
-            builder: (context) => IconButton(
-              icon: Icon(Icons.tune),
-              onPressed: () => Scaffold.of(context).openEndDrawer(),
+          Padding(
+            padding: const EdgeInsets.only(right: 14.0),
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CartPage()),
+                );
+              },
+              icon: Icon(Icons.shopping_bag_outlined),
             ),
           ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CartPage()),
-              );
-            },
-            icon: Icon(Icons.shopping_bag_outlined),
-          ),
         ],
+        elevation: 0,
       ),
-      endDrawer: const FilterDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 10),
               child: Container(
                 height: 52,
                 decoration: BoxDecoration(
@@ -58,34 +63,36 @@ class CategoryDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
+
             Padding(
-              padding: const EdgeInsets.only(right: 14.0, left: 14.0),
+              padding: const EdgeInsets.only(
+                right: 14.0,
+                left: 14.0,
+                bottom: 14.0,
+                top: 14.0,
+              ),
               child: GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: 4,
                   mainAxisSpacing: 14,
                   crossAxisSpacing: 14,
                   childAspectRatio: 0.75,
                 ),
-                itemCount: products.length,
+                itemCount: categories.length,
                 itemBuilder: (context, index) {
-                  final item = products[index];
+                  final item = categories[index];
 
-                  return ProductCard(
-                    title: item["title"] as String,
-                    image: item["image"] as String,
-                    price: item["price"] as String,
-                    oldPrice: item["oldPrice"] as String,
-                    discount: item["discount"] as String,
-                    isHot: item["isHot"] as bool,
-                    isFavorite: item["isFavorite"] as bool,
+                  return CategoryCard(
+                    title: item["title"]!,
+                    imagePath: item["image"]!,
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        '/product-detail',
-                        arguments: item,
+                        '/category-detail',
+                        arguments:
+                            item["title"], 
                       );
                     },
                   );

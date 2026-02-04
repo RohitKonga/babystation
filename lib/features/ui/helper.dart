@@ -433,7 +433,11 @@ class _FilterDrawerState extends State<FilterDrawer> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildSectionHeader(title, Colors.grey.shade300),
+        buildSectionHeader(
+          EdgeInsetsGeometry.symmetric(horizontal: 16.0, vertical: 10),
+          title,
+          Colors.grey.shade300,
+        ),
         ...options.map((option) {
           return RadioListTile<String>(
             title: Text(option, style: const TextStyle(fontSize: 16)),
@@ -455,9 +459,9 @@ class _FilterDrawerState extends State<FilterDrawer> {
   }
 }
 
-Widget buildSectionHeader(String title, Color color) {
+Widget buildSectionHeader(EdgeInsetsGeometry padd, String title, Color color) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+    padding: padd,
     child: Row(
       children: [
         Text(
@@ -469,7 +473,7 @@ Widget buildSectionHeader(String title, Color color) {
           ),
         ),
         const SizedBox(width: 10),
-        Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+        Flexible(child: Divider(color: Colors.grey.shade300, thickness: 1)),
       ],
     ),
   );
@@ -979,7 +983,7 @@ Widget buildCartItem(
   int index,
 ) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10),
+    padding: const EdgeInsets.symmetric(vertical: 10),
     child: Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -1083,5 +1087,79 @@ Widget buildCartItem(
         ],
       ),
     ),
+  );
+}
+
+Widget buildOrderInfo() {
+  return Column(
+    children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /////order & shipping
+          Expanded(
+            child: Column(
+              spacing: 5,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: const [
+                    Text("Order Number: ", style: TextStyle(fontSize: 16)),
+                    Text(
+                      "S12345678",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+                const Text(
+                  "Jul 15, 2025 | 10:00:01 AM",
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                ),
+                const SizedBox(height: 15),
+                const Text(
+                  "Shipping Address",
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                ),
+                const Text(
+                  "402, Shree Krishna Heights, Near Gangeshwar, Adajan, Surat. 395009",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          /////////Payment & Billing
+          Expanded(
+            child: Column(
+              spacing: 5,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Payment Method",
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                ),
+                const Text(
+                  "My E-Wallet",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 15),
+                const Text(
+                  "Billing Address",
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                ),
+                const Text(
+                  "10, Hare Krishna Heights, Near Gangeshwar, Vesu, Surat. 395007",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 20),
+    ],
   );
 }

@@ -1,6 +1,6 @@
 import 'package:babystation/features/ui/home%20page%20module/cart_page.dart';
 import 'package:babystation/features/ui/home%20page%20module/review_page.dart';
-import 'package:babystation/features/ui/home%20page%20module/widgets/category_widget.dart';
+import 'package:babystation/features/ui/helper.dart';
 import 'package:babystation/features/ui/home%20page%20module/write_review.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     '6-9 Months',
   ];
   String? _selectedChoice = '0-3 Months';
-  int _activeTabIndex = 0; // 0 for Details, 1 for Reviews
+  int _activeTabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Inside your ProductDetailScreen children list:
                 ProductImageSlider(
                   images: [
                     product['image'],
@@ -81,7 +80,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       color: Colors.grey.withOpacity(0.2),
                       spreadRadius: 2,
                       blurRadius: 8,
-                      offset: const Offset(0, 4), // shadow position
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
@@ -471,6 +470,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             decoration: TextDecoration.underline,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
+                            fontSize: 16,
                           ),
                         ),
                       ),

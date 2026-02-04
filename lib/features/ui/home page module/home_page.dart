@@ -1,7 +1,7 @@
-import 'package:babystation/features/ui/home%20page%20module/account_screen.dart';
-import 'package:babystation/features/ui/home%20page%20module/category_screen.dart';
+import 'package:babystation/features/ui/account%20module/account_screen.dart';
+import 'package:babystation/features/ui/category%20module/category_screen.dart';
 import 'package:babystation/features/ui/home%20page%20module/home_content.dart';
-import 'package:babystation/features/ui/home%20page%20module/orders_screen.dart';
+import 'package:babystation/features/ui/orders%20module/orders_screen.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {

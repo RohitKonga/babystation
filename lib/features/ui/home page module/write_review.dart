@@ -1,5 +1,6 @@
 import 'package:babystation/features/ui/home%20page%20module/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class WriteReview extends StatefulWidget {
   const WriteReview({Key? key}) : super(key: key);
@@ -64,14 +65,16 @@ class _WriteReviewState extends State<WriteReview> {
               "How would you rate it?",
               style: TextStyle(fontSize: 26),
             ),
-            Row(
-              children: [
-                ...List.generate(
-                  5,
-                  (index) =>
-                      Icon(Icons.star, color: Colors.grey.shade300, size: 40),
-                ),
-              ],
+            RatingBar.builder(
+              initialRating: 0,
+              minRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+              itemBuilder: (context, _) =>
+                  Icon(Icons.star, color: Colors.amber),
+              onRatingUpdate: (rating) {},
             ),
             const Text("Write your review", style: TextStyle(fontSize: 26)),
             Container(

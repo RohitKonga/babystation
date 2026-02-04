@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(),
         '/category-detail': (context) => const CategoryDetailScreen(),
-        '/product-detail': (context) => const ProductDetailScreen(), // Add this
+        '/product-detail': (context) => const ProductDetailScreen(), 
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(

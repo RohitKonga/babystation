@@ -1,4 +1,4 @@
-import 'package:babystation/features/ui/home%20page%20module/widgets/category_widget.dart';
+import 'package:babystation/features/ui/helper.dart';
 import 'package:flutter/material.dart';
 
 class AddChildScreen extends StatefulWidget {
@@ -217,15 +217,15 @@ class _AddChildScreenState extends State<AddChildScreen> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2000), // Adjust based on your app's needs
-      lastDate: DateTime.now(), // Prevents selecting future dates for a child
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFF9C278F), // Header background color
-              onPrimary: Colors.white, // Header text color
-              onSurface: Colors.black, // Body text color
+              primary: Color(0xFF9C278F), 
+              onPrimary: Colors.white, 
+              onSurface: Colors.black, 
             ),
           ),
           child: child!,

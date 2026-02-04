@@ -1,5 +1,5 @@
 import 'package:babystation/features/ui/home%20page%20module/checkout_page.dart';
-import 'package:babystation/features/ui/home%20page%20module/widgets/category_widget.dart';
+import 'package:babystation/features/ui/helper.dart';
 import 'package:flutter/material.dart';
 
 class CartPage extends StatefulWidget {
@@ -22,21 +22,25 @@ class _CartPageState extends State<CartPage> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0, bottom: 10.0),
-            child: buildSectionHeader("3 items", Colors.black),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: cartItems.length,
-              itemBuilder: (context, index) =>
-                  buildCartItem(context, cartItems[index], index),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildSectionHeader(
+              EdgeInsetsGeometry.symmetric(),
+              "3 items",
+              Colors.black,
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: cartItems.length,
+                itemBuilder: (context, index) =>
+                    buildCartItem(context, cartItems[index], index),
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: _buildBottomBar(),
     );
