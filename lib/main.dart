@@ -1,6 +1,6 @@
-import 'package:babystation/features/ui/category%20module/category_detail_screen.dart';
-import 'package:babystation/features/ui/home%20page%20module/product_detail_screen.dart';
-import 'package:babystation/features/ui/splash_screen.dart';
+import 'package:babystation/features/category/view/category_detail_screen.dart';
+import 'package:babystation/features/home/view/product_detail_screen.dart';
+import 'package:babystation/features/splash/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
