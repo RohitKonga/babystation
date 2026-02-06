@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'package:babystation/features/onboarding/view/onboarding_screen_page.dart';
+import 'package:babystation/features/auth/controller/auth_controller.dart';
+import 'package:babystation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -10,16 +12,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
+  final AuthController controller = Get.find<AuthController>();
   @override
   void initState() {
-    Timer(
-      Duration(seconds: 2),
-      () => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => OnboardingScreenPage()),
-      ),
-    );
     super.initState();
+    _navigate();
+  }
+
+  void _navigate() {
+    Timer(Duration(seconds: 2), () {
+      if (controller.isLoggedIn) {
+        Get.offAllNamed(Routes.splash);
+      } else {
+        Get.offAllNamed(Routes.login);
+      }
+    });
   }
 
   @override

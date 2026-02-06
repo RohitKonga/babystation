@@ -1,25 +1,23 @@
 import 'package:babystation/features/account/view/faq.dart';
 import 'package:babystation/features/account/view/favorites.dart';
-import 'package:babystation/features/account/view/my_profile.dart';
 import 'package:babystation/features/account/view/privacy_policy.dart';
 import 'package:babystation/features/account/view/support.dart';
 import 'package:babystation/features/account/view/terms_conditions.dart';
+import 'package:babystation/features/auth/controller/auth_controller.dart';
 import 'package:babystation/features/home/view/manage_address.dart';
-import 'package:babystation/features/auth/view/login_page.dart';
+import 'package:babystation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class AccountScreen extends StatefulWidget {
+class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
-  @override
-  _AccountScreenState createState() => _AccountScreenState();
-}
-
-class _AccountScreenState extends State<AccountScreen> {
   final headerColor = const Color(0xFF9C278F);
 
   @override
   Widget build(BuildContext context) {
+    final AuthController controller = Get.find<AuthController>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -56,51 +54,86 @@ class _AccountScreenState extends State<AccountScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        spacing: 10,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Account",
-                            style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
+                      Obx(() {
+                        final name = controller.user.value?.name;
+                        final email = controller.user.value?.email;
+                        return Column(
+                          spacing: 10,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              name != null && name.isNotEmpty
+                                  ? name
+                                  : "Account",
+                              style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "Log in to get exclusive offers",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadiusGeometry.circular(12),
-                          ),
-                          backgroundColor: const Color(0xFF9C278F),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 15,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage(),
+                            Text(
+                              email != null && email.isNotEmpty
+                                  ? email
+                                  : "Log in to get exclusive offers",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ],
+                        );
+                      }),
+
+                      Obx(() {
+                        final user = controller.user.value;
+
+                        if (user == null) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              backgroundColor: const Color(0xFF9C278F),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                                vertical: 15,
+                              ),
+                            ),
+                            onPressed: () {
+                              Get.toNamed(Routes.login);
+                            },
+                            child: const Text(
+                              "LOGIN",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
                           );
-                        },
-                        child: const Text(
-                          "LOGIN",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                        }
+
+                        final name = user.name.trim();
+                        final parts = name.split(RegExp(r"\s+"));
+
+                        String initials;
+                        if (parts.length >= 2) {
+                          initials = parts[0][0] + parts[1][0];
+                        } else if (parts.isNotEmpty && parts[0].isNotEmpty) {
+                          initials = parts[0][0];
+                        } else {
+                          initials = "";
+                        }
+
+                        return CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.grey.shade400,
+                          child: Text(
+                            initials.toUpperCase(),
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     ],
                   ),
                 ),
@@ -187,40 +220,47 @@ class _AccountScreenState extends State<AccountScreen> {
                   ],
                 ),
               ),
+
               SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF9C278F),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+
+              Obx(() {
+                final isLoggedIn = controller.user.value != null;
+
+                if (!isLoggedIn) {
+                  return SizedBox();
+                }
+
+                return SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF9C278F),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      controller.logout();
+                    },
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.logout, color: Colors.white),
+                        SizedBox(width: 6),
+                        Text(
+                          "LOGOUT",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyProfile()),
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 5,
-                    children: [
-                      Icon(Icons.logout),
-                      Text(
-                        "LOGOUT",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                );
+              }),
             ],
           ),
         ),

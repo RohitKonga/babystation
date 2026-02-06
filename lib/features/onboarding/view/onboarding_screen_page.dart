@@ -1,5 +1,6 @@
-import 'package:babystation/features/auth/view/login_page.dart';
+import 'package:babystation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class OnboardingScreenPage extends StatefulWidget {
   const OnboardingScreenPage({super.key});
@@ -166,10 +167,7 @@ class _OnboardingScreenPageState extends State<OnboardingScreenPage> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        );
+                        Get.toNamed(Routes.login);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF9C278F),

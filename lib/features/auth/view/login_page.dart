@@ -1,5 +1,7 @@
+import 'package:babystation/features/auth/controller/auth_controller.dart';
 import 'package:babystation/features/auth/view/otp_verification.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,6 +12,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  final AuthController controller = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,31 +142,44 @@ class LoginPageState extends State<LoginPage> {
                 SizedBox(
                   width: double.infinity,
                   height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 241, 241, 241),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/images/google.png', width: 20),
-                        SizedBox(width: 10),
-                        const Text(
-                          "Continue with Google",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            // fontWeight: FontWeight.w600,
-                          ),
+                  child: Obx(() {
+                    final isLoading = controller.isLoading.value;
+
+                    return ElevatedButton(
+                      onPressed: () {
+                        isLoading ? null : controller.signInWithGoogle();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          241,
+                          241,
+                          241,
                         ),
-                      ],
-                    ),
-                  ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/images/google.png', width: 20),
+                          SizedBox(width: 10),
+                          Text(
+                            isLoading
+                                ? "Signing in..."
+                                : "Continue with Google",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              // fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ),
               ],
             ),

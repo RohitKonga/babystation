@@ -82,7 +82,14 @@ Widget addChildCard() {
   );
 }
 
-// 1. Add 'gender' as a parameter to the function
+class ChildProfile {
+  final String name;
+  final String gender;
+  final String dob;
+
+  ChildProfile({required this.name, required this.gender, required this.dob});
+}
+
 Widget profileCard(String name, String gender, {bool selected = false}) {
   return Container(
     margin: const EdgeInsets.only(right: 12),
@@ -100,7 +107,6 @@ Widget profileCard(String name, String gender, {bool selected = false}) {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(14),
             child: Image.asset(
-              // 2. Use a ternary operator to switch images based on gender
               gender == "Girl"
                   ? "assets/images/girl.png"
                   : "assets/images/boy.png",
@@ -139,14 +145,6 @@ final List<Map<String, String>> categories = [
   {"title": "Baby", "image": "assets/categories/baby.png"},
   {"title": "Health", "image": "assets/categories/health.png"},
 ];
-
-class ChildProfile {
-  final String name;
-  final String gender; // "Boy" or "Girl"
-  final String dob;
-
-  ChildProfile({required this.name, required this.gender, required this.dob});
-}
 
 class ProductCard extends StatelessWidget {
   final String title;
@@ -221,7 +219,7 @@ class ProductCard extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min, // Takes only needed space
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     title,
@@ -302,8 +300,6 @@ final List<String> brandLogos = [
   "assets/brands/caranila.png",
 ];
 
-/////////////////////////// SORT & FILTER ////////////////////////////////////////
-
 class FilterDrawer extends StatefulWidget {
   const FilterDrawer({super.key});
 
@@ -349,7 +345,6 @@ class _FilterDrawerState extends State<FilterDrawer> {
             ),
           ),
 
-          // SCROLLABLE CONTENT
           Expanded(
             child: ListView(
               padding: EdgeInsets.zero,
@@ -400,7 +395,6 @@ class _FilterDrawerState extends State<FilterDrawer> {
             ),
           ),
 
-          // APPLY BUTTON
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: SizedBox(
@@ -452,7 +446,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
             dense: true,
             visualDensity: VisualDensity.compact,
           );
-        }).toList(),
+        }),
         const SizedBox(height: 10),
       ],
     );
@@ -498,7 +492,6 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
       children: [
         Stack(
           children: [
-            // IMAGE VIEWPORT
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -539,7 +532,6 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
               ),
             ),
 
-            // SHARE & FAVORITE ICONS
             Positioned(
               top: 15,
               right: 15,
@@ -555,7 +547,6 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
               ),
             ),
 
-            // THE DOT INDICATOR (Positioned at bottom center)
             Positioned(
               bottom: 15,
               left: 0,
@@ -574,7 +565,6 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
     );
   }
 
-  // HELPER: BUILD ANIMATED DOT
   Widget _buildDot(int index) {
     bool isActive = _currentIndex == index;
     return AnimatedContainer(
@@ -948,7 +938,7 @@ void showDeleteDialog(BuildContext context, int index) {
                 ),
               ],
             ),
-            const SizedBox(height: 10), // Safe area bottom padding
+            const SizedBox(height: 10),
           ],
         ),
       );
