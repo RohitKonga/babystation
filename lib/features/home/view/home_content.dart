@@ -1,8 +1,10 @@
+import 'package:babystation/features/home/controller/banner_controller.dart';
 import 'package:babystation/features/home/view/add_child_screen.dart';
 import 'package:babystation/features/home/view/cart_page.dart';
 import 'package:babystation/features/category/view/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:babystation/core/widgets/widgets.dart';
+import 'package:get/get.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({Key? key}) : super(key: key);
@@ -14,6 +16,8 @@ class HomeContent extends StatefulWidget {
 class _HomeContentState extends State<HomeContent>
     with AutomaticKeepAliveClientMixin {
   PageController _pageController = PageController();
+  final BannerController controller = Get.put(BannerController());
+
   int _currentPage = 0;
   bool expanded = false;
   final headerColor = const Color(0xFF9C278F);
@@ -25,9 +29,8 @@ class _HomeContentState extends State<HomeContent>
     setState(() => expanded = !expanded);
   }
 
-  // Inside _HomeContentState
   List<ChildProfile> children = [
-    ChildProfile(name: "All", gender: "All", dob: ""), // Default item
+    ChildProfile(name: "All", gender: "All", dob: ""),
   ];
   int selectedChildIndex = 0;
 
@@ -196,7 +199,7 @@ class _HomeContentState extends State<HomeContent>
                                   selected: selectedChildIndex == idx,
                                 ),
                               );
-                            }).toList(),
+                            }),
                           ],
                         ),
                       ),
@@ -234,26 +237,50 @@ class _HomeContentState extends State<HomeContent>
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  AspectRatio(
-                    aspectRatio: 1380 / 1380,
-                    child: PageView.builder(
-                      physics: BouncingScrollPhysics(),
-                      controller: _pageController,
-                      onPageChanged: (index) {
-                        setState(() => _currentPage = index % banners.length);
-                      },
-                      itemBuilder: (context, index) {
-                        final realIndex = index % banners.length;
-                        return Padding(
-                          padding: const EdgeInsets.all(14.0),
-                          child: Image.asset(
-                            banners[realIndex],
-                            fit: BoxFit.contain,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  Obx(() {
+                    if (controller.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (controller.bannerList.isEmpty) {
+                      return const SizedBox();
+                    }
+                    return AspectRatio(
+                      aspectRatio: 1380 / 1380,
+                      child: PageView.builder(
+                        physics: BouncingScrollPhysics(),
+                        controller: _pageController,
+                        onPageChanged: (index) {
+                          setState(
+                            () => _currentPage =
+                                index % controller.bannerList.length,
+                          );
+                        },
+                        itemBuilder: (context, index) {
+                          final realIndex =
+                              index % controller.bannerList.length;
+                          final banner = controller.bannerList[realIndex];
+                          return Padding(
+                            padding: const EdgeInsets.all(14.0),
+                            child: Image.network(
+                              banner.imageUrl,
+                              fit: BoxFit.cover,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(Icons.broken_image);
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }),
 
                   const SizedBox(height: 8),
 

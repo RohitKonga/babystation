@@ -1,6 +1,7 @@
 import 'package:babystation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class OnboardingScreenPage extends StatefulWidget {
   const OnboardingScreenPage({super.key});
@@ -55,6 +56,11 @@ class _OnboardingScreenPageState extends State<OnboardingScreenPage> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeIn,
     );
+  }
+
+  void onOnboardingComplete() {
+    GetStorage().write('isFirstTime', false);
+    Get.offAllNamed(Routes.login);
   }
 
   @override
@@ -167,7 +173,7 @@ class _OnboardingScreenPageState extends State<OnboardingScreenPage> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.toNamed(Routes.login);
+                        onOnboardingComplete();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF9C278F),

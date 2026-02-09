@@ -1,14 +1,17 @@
+import 'package:babystation/features/account/controller/faq_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Faq extends StatelessWidget {
   const Faq({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final FaqController controller = Get.find<FaqController>();
     final headerColor = const Color(0xFF9C278F);
 
     return Scaffold(
-      appBar: AppBar( 
+      appBar: AppBar(
         title: Text(
           "FAQs",
           style: TextStyle(
@@ -42,52 +45,55 @@ class Faq extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      _buildExpansionItem(
-                        context,
-                        "How to order?",
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-                      ),
-                      _buildExpansionItem(
-                        context,
-                        "How to track order?",
-                        "You can track your order in the My Orders section.  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen boo",
-                      ),
-                      _buildExpansionItem(
-                        context,
-                        "How to cancel order?",
-                        "Orders can be cancelled within 30 minutes of placement.  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.",
-                      ),
-                      _buildExpansionItem(
-                        context,
-                        "Can I re-order again?",
-                        "Orders can be cancelled within 30 minutes of placement.  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.",
-                      ),
-                      _buildExpansionItem(
-                        context,
-                        "How to pay for an order?",
-                        "Orders can be cancelled within 30 minutes of placement.  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.",
-                      ),
-                      _buildExpansionItem(
-                        context,
-                        "How to change lanaguge?",
-                        "Orders can be cancelled within 30 minutes of placement.  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.",
-                      ),
-                      _buildExpansionItem(
-                        context,
-                        "Can I login through Social account?",
-                        "Orders can be cancelled within 30 minutes of placement.  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.",
-                      ),
-                      _buildExpansionItem(
-                        context,
-                        "How to logout my account?`",
-                        "Orders can be cancelled within 30 minutes of placement.  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.",
-                      ),
-                    ],
-                  ),
+                  child: Obx(() {
+                    if (controller.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (controller.faqList.isEmpty) {
+                      return Center(child: Text("No FAQs found"));
+                    }
+                    return ListView.builder(
+                      itemCount: controller.faqList.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final category = controller.faqList[index];
+                        return ExpansionTile(
+                          title: Text(
+                            category.title,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          children: category.items.map((faq) {
+                            return ExpansionTile(
+                              title: Text(
+                                faq.question,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(
+                                    faq.answer,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.grey.shade600,
+                                      height: 1.5,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList(),
+                        );
+                      },
+                    );
+                  }),
                 ),
               ),
             ],
@@ -97,40 +103,40 @@ class Faq extends StatelessWidget {
     );
   }
 
-  Widget _buildExpansionItem(
-    BuildContext context,
-    String question,
-    String answer,
-  ) {
-    return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-      child: ExpansionTile(
-        title: Text(
-          question,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontSize: 18,
-          ),
-        ),
-        iconColor: Colors.black,
-        collapsedIconColor: Colors.black,
-        childrenPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 10,
-        ),
+  // Widget _buildExpansionItem(
+  //   BuildContext context,
+  //   String question,
+  //   String answer,
+  // ) {
+  //   return Theme(
+  //     data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+  //     child: ExpansionTile(
+  //       title: Text(
+  //         question,
+  //         style: const TextStyle(
+  //           fontWeight: FontWeight.bold,
+  //           color: Colors.black,
+  //           fontSize: 18,
+  //         ),
+  //       ),
+  //       iconColor: Colors.black,
+  //       collapsedIconColor: Colors.black,
+  //       childrenPadding: const EdgeInsets.symmetric(
+  //         horizontal: 16,
+  //         vertical: 10,
+  //       ),
 
-        children: [
-          Text(
-            answer,
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 16,
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  //       children: [
+  //         Text(
+  //           answer,
+  //           style: TextStyle(
+  //             color: Colors.grey.shade600,
+  //             fontSize: 16,
+  //             height: 1.5,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

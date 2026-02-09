@@ -1,4 +1,4 @@
-import 'package:babystation/features/home/view/manage_address.dart';
+import 'package:babystation/features/account/view/manage_address.dart';
 import 'package:babystation/features/home/view/payment_method.dart';
 import 'package:babystation/core/widgets/widgets.dart';
 import 'package:flutter/material.dart';

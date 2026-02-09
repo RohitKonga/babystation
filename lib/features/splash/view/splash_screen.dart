@@ -3,6 +3,7 @@ import 'package:babystation/features/auth/controller/auth_controller.dart';
 import 'package:babystation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,6 +14,7 @@ class SplashScreen extends StatefulWidget {
 
 class SplashScreenState extends State<SplashScreen> {
   final AuthController controller = Get.find<AuthController>();
+  final storage = GetStorage();
   @override
   void initState() {
     super.initState();
@@ -20,11 +22,16 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigate() {
-    Timer(Duration(seconds: 2), () {
-      if (controller.isLoggedIn) {
-        Get.offAllNamed(Routes.splash);
+    Timer(const Duration(seconds: 2), () {
+      bool isFirstTime = storage.read('isFirstTime') ?? true;
+      if (isFirstTime) {
+        Get.offAllNamed(Routes.onboard);
       } else {
-        Get.offAllNamed(Routes.login);
+        if (controller.isLoggedIn) {
+          Get.offAllNamed(Routes.home);
+        } else {
+          Get.offAllNamed(Routes.login);
+        }
       }
     });
   }

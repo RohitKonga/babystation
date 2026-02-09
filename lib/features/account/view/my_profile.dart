@@ -1,4 +1,6 @@
+import 'package:babystation/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({super.key});
@@ -8,6 +10,7 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
+  final AuthController controller = Get.find<AuthController>();
   final headerColor = const Color(0xFF9C278F);
   TextEditingController dobController = TextEditingController();
 
@@ -26,60 +29,76 @@ class _MyProfileState extends State<MyProfile> {
         backgroundColor: headerColor,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildText("Full Name", "Full Name"),
-              const SizedBox(height: 20),
-              _buildText("Email Address", "Email Address"),
-              const SizedBox(height: 20),
-              _buildText("Phone Number", "Phone Number"),
-              const SizedBox(height: 20),
+      body: Obx(() {
+        final user = controller.user.value;
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildText(
+                  title: "Full Name",
+                  value: user?.name ?? '',
+                  hint: "Full Name",
+                  enabled: true,
+                ),
+                const SizedBox(height: 20),
+                _buildText(
+                  title: "Email Address",
+                  value: user?.email ?? '',
+                  hint: "Full Name",
+                ),
+                const SizedBox(height: 20),
+                _buildText(
+                  title: "Phone Number",
+                  value: "",
+                  hint: "Phone Number",
+                ),
+                const SizedBox(height: 20),
 
-              Padding(
-                padding: const EdgeInsets.only(left: 2, bottom: 6),
-                child: const Text(
-                  "Date Of Birth",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-              ),
-              TextField(
-                controller: dobController,
-                readOnly: true,
-                onTap: () => _selectDate(context),
-                decoration: InputDecoration(
-                  hint: Text(
-                    "dd-mm-yyyy",
-                    style: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Color(0xFF9C278F)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.grey.shade200),
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: () => _selectDate(context),
-                    icon: const Icon(
-                      Icons.calendar_month,
-                      color: Color(0xFF9C278F),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 2, bottom: 6),
+                  child: const Text(
+                    "Date Of Birth",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),
-              ),
-            ],
+                TextField(
+                  controller: dobController,
+                  readOnly: true,
+                  onTap: () => _selectDate(context),
+                  decoration: InputDecoration(
+                    hint: Text(
+                      "dd-mm-yyyy",
+                      style: TextStyle(
+                        color: Colors.grey.shade400,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Color(0xFF9C278F)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.grey.shade200),
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () => _selectDate(context),
+                      icon: const Icon(
+                        Icons.calendar_month,
+                        color: Color(0xFF9C278F),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
         child: SizedBox(
@@ -135,7 +154,12 @@ class _MyProfileState extends State<MyProfile> {
     }
   }
 
-  Widget _buildText(String title, String hint) {
+  Widget _buildText({
+    required String title,
+    required String value,
+    required String hint,
+    bool enabled = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -147,6 +171,8 @@ class _MyProfileState extends State<MyProfile> {
           ),
         ),
         TextField(
+          enabled: enabled,
+          controller: TextEditingController(text: value),
           decoration: InputDecoration(
             hint: Text(
               hint,
@@ -161,6 +187,10 @@ class _MyProfileState extends State<MyProfile> {
               borderSide: BorderSide(color: Color(0xFF9C278F)),
             ),
             enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.grey.shade200),
+            ),
+            disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.grey.shade200),
             ),

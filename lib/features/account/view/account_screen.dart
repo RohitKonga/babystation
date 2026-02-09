@@ -4,7 +4,7 @@ import 'package:babystation/features/account/view/privacy_policy.dart';
 import 'package:babystation/features/account/view/support.dart';
 import 'package:babystation/features/account/view/terms_conditions.dart';
 import 'package:babystation/features/auth/controller/auth_controller.dart';
-import 'package:babystation/features/home/view/manage_address.dart';
+import 'package:babystation/features/account/view/manage_address.dart';
 import 'package:babystation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
-  final headerColor = const Color(0xFF9C278F);
+  static const Color headerColor = Color(0xFF9C278F);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class AccountScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "My Account",
           style: TextStyle(
             color: Colors.white,
@@ -33,114 +33,118 @@ class AccountScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
+              /// ================= HEADER =================
+              Obx(() {
+                final user = controller.user.value;
+                final isLoggedIn = user != null;
+
+                final name = user?.name.trim() ?? '';
+                final email = user?.email.trim() ?? '';
+
+                // Initials (null-safe)
+                String initials = '';
+                if (name.isNotEmpty) {
+                  final parts = name.split(RegExp(r'\s+'));
+                  initials = parts.length >= 2
+                      ? parts[0][0] + parts[1][0]
+                      : parts[0][0];
+                }
+
+                return InkWell(
                   borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withValues(alpha: 0.2),
-                      spreadRadius: 2,
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+                  onTap: isLoggedIn
+                      ? () => Get.toNamed(Routes.profile)
+                      : null,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withValues(alpha: 0.2),
+                          spreadRadius: 2,
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Obx(() {
-                        final name = controller.user.value?.name;
-                        final email = controller.user.value?.email;
-                        return Column(
-                          spacing: 10,
+                    padding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        /// LEFT SIDE (name + email)
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              name != null && name.isNotEmpty
-                                  ? name
-                                  : "Account",
-                              style: TextStyle(
+                              name.isNotEmpty ? name : "Account",
+                              style: const TextStyle(
                                 fontSize: 21,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            const SizedBox(height: 10),
                             Text(
-                              email != null && email.isNotEmpty
+                              email.isNotEmpty
                                   ? email
                                   : "Log in to get exclusive offers",
-                              style: TextStyle(fontSize: 18),
+                              style: const TextStyle(fontSize: 18),
                             ),
                           ],
-                        );
-                      }),
+                        ),
 
-                      Obx(() {
-                        final user = controller.user.value;
-
-                        if (user == null) {
-                          return ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                        /// RIGHT SIDE (login / avatar)
+                        isLoggedIn
+                            ? CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.grey.shade400,
+                                child: initials.isEmpty
+                                    ? const Icon(Icons.person,
+                                        color: Colors.black)
+                                    : Text(
+                                        initials.toUpperCase(),
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                              )
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: headerColor,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 30,
+                                    vertical: 15,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Get.toNamed(Routes.login);
+                                },
+                                child: const Text(
+                                  "LOGIN",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
-                              backgroundColor: const Color(0xFF9C278F),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 30,
-                                vertical: 15,
-                              ),
-                            ),
-                            onPressed: () {
-                              Get.toNamed(Routes.login);
-                            },
-                            child: const Text(
-                              "LOGIN",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                          );
-                        }
-
-                        final name = user.name.trim();
-                        final parts = name.split(RegExp(r"\s+"));
-
-                        String initials;
-                        if (parts.length >= 2) {
-                          initials = parts[0][0] + parts[1][0];
-                        } else if (parts.isNotEmpty && parts[0].isNotEmpty) {
-                          initials = parts[0][0];
-                        } else {
-                          initials = "";
-                        }
-
-                        return CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.grey.shade400,
-                          child: Text(
-                            initials.toUpperCase(),
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        );
-                      }),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
+              /// ================= MENU =================
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -155,79 +159,53 @@ class AccountScreen extends StatelessWidget {
                   ],
                 ),
                 child: Column(
-                  spacing: 2,
                   children: [
                     _buildMenu(
                       Icons.favorite,
                       "Favorites",
                       "Your saved products",
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Favorites()),
-                      ),
+                      () => Get.to(() => Favorites()),
                     ),
                     _buildMenu(
                       Icons.location_on,
                       "Manage Address",
                       "Your saved address",
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ManageAddress(),
-                        ),
-                      ),
+                      () => Get.to(() => ManageAddress()),
                     ),
                     _buildMenu(
                       Icons.mail,
                       "Support",
                       "Connect us for issue & feedback",
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Support()),
-                      ),
+                      () => Get.to(() => Support()),
                     ),
                     _buildMenu(
                       Icons.privacy_tip,
                       "Privacy Policy",
                       "Know our privacy policy",
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PrivacyPolicy(),
-                        ),
-                      ),
+                      () => Get.to(() => PrivacyPolicy()),
                     ),
                     _buildMenu(
                       Icons.assignment,
-                      "Terms  & Conditions",
-                      "Know our terms  & conditions",
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TermsConditions(),
-                        ),
-                      ),
+                      "Terms & Conditions",
+                      "Know our terms & conditions",
+                      () => Get.to(() => TermsConditions()),
                     ),
                     _buildMenu(
                       Icons.live_help_rounded,
                       "FAQs",
                       "Get your question’s answered",
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Faq()),
-                      ),
+                      () => Get.to(() => Faq()),
                     ),
                   ],
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
+              /// ================= LOGOUT =================
               Obx(() {
-                final isLoggedIn = controller.user.value != null;
-
-                if (!isLoggedIn) {
-                  return SizedBox();
+                if (controller.user.value == null) {
+                  return const SizedBox.shrink();
                 }
 
                 return SizedBox(
@@ -235,14 +213,12 @@ class AccountScreen extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF9C278F),
+                      backgroundColor: headerColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {
-                      controller.logout();
-                    },
+                    onPressed: controller.logout,
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -276,24 +252,16 @@ class AccountScreen extends StatelessWidget {
   ) {
     return ListTile(
       onTap: onTap,
-      leading: Container(
+      leading: Padding(
         padding: const EdgeInsets.all(8),
-        // decoration: BoxDecoration(
-        //   color: const Color(0xFF9C278F).withValues(alpha: 0.1),
-        //   shape: BoxShape.circle,
-        // ),
-        child: Icon(icon, color: const Color(0xFF9C278F), size: 30),
+        child: Icon(icon, color: headerColor, size: 30),
       ),
       title: Text(
         title,
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
       ),
-      subtitle: Text(subtitle, style: TextStyle(fontSize: 18)),
-      trailing: const Icon(
-        Icons.arrow_forward_ios,
-        size: 16,
-        color: Colors.black,
-      ),
+      subtitle: Text(subtitle, style: const TextStyle(fontSize: 18)),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
     );
   }
 }

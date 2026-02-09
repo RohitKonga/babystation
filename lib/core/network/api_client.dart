@@ -9,8 +9,9 @@ class ApiClient {
 
   Future<Map<String, dynamic>> post(
     String endpoint,
-    Map<String, dynamic> body,
-  ) async {
+    Map<String, dynamic> body, {
+    bool requireAuth = false,
+  }) async {
     try {
       final response = await http.post(
         Uri.parse(baseURL + endpoint),
@@ -32,6 +33,28 @@ class ApiClient {
       }
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> get(
+    String endpoint, {
+    bool requireAuth = false,
+  }) async {
+    final uri = Uri.parse(baseURL + endpoint);
+    final response = await http.get(
+      uri,
+      headers: {
+        'Accept': 'application/json',
+        if (requireAuth && StorageService.getToken() != null)
+          'Authorization': 'Bearer ${StorageService.getToken()}',
+      },
+    );
+    final data = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      return data;
+    } else {
+      throw Exception(data['Message'] ?? 'Request Failed');
     }
   }
 }
